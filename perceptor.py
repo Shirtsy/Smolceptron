@@ -63,7 +63,7 @@ for x in range(3):
             actual_value = data["value"],
             input = data["input"]
         )
-    print("---Training Round:", x, "---")
+    print("--- Training Round", x+1, "---")
     print("Correct:", correct)
     print("Incorrect:", incorrect)
 
