@@ -49,7 +49,7 @@ with open('iris_valid.csv', mode ='r')as file:
 perceptor = Perceptron(size = 4)
 
 # Training
-for x in range(5):
+for x in range(3):
     correct = 0
     incorrect = 0
     for data in training_data:
@@ -85,4 +85,4 @@ print("-----Validation-----")
 print("Correct:", correct)
 print("Incorrect:", incorrect)
 
-print([format(x, '.4f') for x in perceptor.weights])
+print("Weights:", [format(x, '.4f') for x in perceptor.weights])
