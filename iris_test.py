@@ -3,7 +3,7 @@ from smolceptron import Perceptron
 
 # Load training data
 training_data = []
-with open('iris_training.csv', mode = 'r')as file:
+with open('data/iris_training.csv', mode = 'r')as file:
   csvFile = csv.reader(file)
   for line in csvFile:
         training_data.append({
@@ -13,7 +13,7 @@ with open('iris_training.csv', mode = 'r')as file:
         })
 # Load validation data
 validation_data = []
-with open('iris_valid.csv', mode ='r')as file:
+with open('data/iris_valid.csv', mode ='r')as file:
   csvFile = csv.reader(file)
   for line in csvFile:
         validation_data.append({
