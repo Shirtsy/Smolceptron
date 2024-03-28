@@ -8,10 +8,11 @@ class Perceptron:
     def inference(self, input: list):
         if len(input) != len(self.weights):
             raise ValueError("Input size must match model size")
-        # Multiple inputs by weights
+        # Multiply inputs by weights and sum them
         net = 0
         for i, value in enumerate(input):
             net += value * self.weights[i]
+        # Step function
         if net > 0:
             return 1
         else:
