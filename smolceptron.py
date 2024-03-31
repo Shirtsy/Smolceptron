@@ -1,5 +1,5 @@
 import csv
-from math import exp
+import math
 
 class Perceptron:
     def __init__(self, size: int, learning_rate: float = 0.01, bias: float = 1.0):
@@ -13,7 +13,7 @@ class Perceptron:
         elif input < -30:
             return -1
         else:
-            return 2 * (1 / (1 + exp(-input))) - 1
+            return 2 * (1 / (1 + math.exp(-input))) - 1
     
     def inference(self, input: list):
         if len(input) != len(self.weights):

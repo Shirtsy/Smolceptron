@@ -1,7 +1,8 @@
 import csv
+import random
 from smolceptron import Perceptron
 
-TRAINING_ROUNDS = 1
+TRAINING_ROUNDS = 100
 BASE_LEARNING_RATE = 0.01
 BIAS = 1
 
@@ -25,7 +26,9 @@ def load_data(filepath: str, target: int) -> list[dict]:
     # Cut down list of non-target values to make ratio 50:50
     targets = [x for x in data if x["value"] == 1]
     non_targets = [x for x in data if x["value"] == -1]
+    random.shuffle(non_targets)
     data = targets + non_targets[:len(targets)]
+    random.shuffle(data)
     return data
 
 def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> list[float]:

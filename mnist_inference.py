@@ -20,7 +20,7 @@ def is_equal(in_1, in_2) -> int:
 
 # Load weight data
 all_weights = []
-with open('mnist_test_weights.csv', mode = 'r')as file:
+with open('weights_1.csv', mode = 'r')as file:
   csvFile = csv.reader(file)
   for line in csvFile:
         all_weights.append([float(x) for x in line])
@@ -35,4 +35,4 @@ pixels = get_pixel_values_flat("image.png")
 #print(pixels)
 for i, perceptor in enumerate(perceptors):
     inference = perceptor.inference(pixels)
-    print(str(i) + ":" + " " + str(inference))
+    print(str(i) + ":" + " " + format(inference, '.2f'))
