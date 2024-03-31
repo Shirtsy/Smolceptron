@@ -20,7 +20,7 @@ def is_equal(in_1, in_2) -> int:
 
 # Load weight data
 all_weights = []
-with open('weights_1.csv', mode = 'r')as file:
+with open('weights_0-1.csv', mode = 'r')as file:
   csvFile = csv.reader(file)
   for line in csvFile:
         all_weights.append([float(x) for x in line])
