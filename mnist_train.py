@@ -1,7 +1,7 @@
 import csv
 from smolceptron import Perceptron
 
-TRAINING_ROUNDS = 50
+TRAINING_ROUNDS = 1
 BASE_LEARNING_RATE = 0.01
 BIAS = 1
 
@@ -39,7 +39,8 @@ def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> lis
         incorrect = 0
         for data in training_data:
             inference = perceptor.inference(data["input"])
-            if inference == data["value"]:
+            # Detect if correct within threshold
+            if inference - data["value"] < 0.1:
                 correct += 1
             else:
                 incorrect += 1
@@ -49,6 +50,7 @@ def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> lis
                 input = data["input"]
             )
 
+            perceptor.learning_rate = BASE_LEARNING_RATE / (x+1)
         print("- Training Round:", x+1)
         print("\tCorrect:", correct)
         print("\tIncorrect:", incorrect)
