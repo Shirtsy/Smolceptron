@@ -1,8 +1,8 @@
 import csv
 from smolceptron import Perceptron
 
-TRAINING_ROUNDS = 5
-BASE_LEARNING_RATE = 0.5
+TRAINING_ROUNDS = 50
+BASE_LEARNING_RATE = 0.01
 BIAS = 1
 
 def is_equal(in_1, in_2) -> float:
@@ -12,30 +12,27 @@ def is_equal(in_1, in_2) -> float:
     else:
         return -1
 
+def load_data(filepath: str, target: int) -> list[dict]:
+    data = []
+    with open(filepath, mode = 'r')as file:
+        next(file)
+        csvFile = csv.reader(file)
+        for line in csvFile:
+                data.append({
+                    "input": [int(x) for x in line[1:]],
+                    "value": is_equal(int(line[0]), target)
+                })
+    # Cut down list of non-target values to make ratio 50:50
+    targets = [x for x in data if x["value"] == 1]
+    non_targets = [x for x in data if x["value"] == -1]
+    data = targets + non_targets[:len(targets)]
+    return data
+
 def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> list[float]:
-    # Load training data
-    training_data = []
-    with open('data/mnist_train.csv', mode = 'r')as file:
-        next(file)
-        csvFile = csv.reader(file)
-        for line in csvFile:
-                training_data.append({
-                    "input": [int(x) for x in line[1:]],
-                    "value": is_equal(int(line[0]), target)
-                })
-    # Load validation data
-    validation_data = []
-    with open('data/mnist_test.csv', mode ='r')as file:
-        next(file)
-        csvFile = csv.reader(file)
-        for line in csvFile:
-                validation_data.append({
-                    "input": [int(x) for x in line[1:]],
-                    "value": is_equal(int(line[0]), target)
-                })
+    training_data = load_data("data/mnist_train.csv", target)
+    validation_data = load_data("data/mnist_test.csv", target)
 
     perceptor = Perceptron(size = len(training_data[0]["input"]), learning_rate=learning_rate, bias = BIAS)
-    initial_learning_rate = perceptor.learning_rate
     # Training
     for x in range(rounds):
         correct = 0
@@ -51,13 +48,11 @@ def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> lis
                 actual_value = data["value"],
                 input = data["input"]
             )
-        # Decrease learning rate over training rounds for fine-tuning
-        perceptor.learning_rate = initial_learning_rate / (x + 1)
 
         print("- Training Round:", x+1)
         print("\tCorrect:", correct)
         print("\tIncorrect:", incorrect)
-        print("\tAccuracy:", format(((correct/(correct + incorrect))*10)-9, '.6f'))
+        print("\tAccuracy:", format(correct/(correct + incorrect), '.6f'))
         print("\tLearning Rate:", format(perceptor.learning_rate, '.6f'))
 
     # Validation
@@ -72,7 +67,7 @@ def train_mnist_perceptor(target: int, rounds: int, learning_rate: float) -> lis
     print("- Validation")
     print("\tCorrect:", correct)
     print("\tIncorrect:", incorrect)
-    print("\tAccuracy:", format(((correct/(correct + incorrect))*10)-9, '.6f'))
+    print("\tAccuracy:", format(correct/(correct + incorrect), '.6f'))
     print("")
     
     return perceptor.weights
@@ -82,7 +77,7 @@ for i in range(10):
     print("### Training for", i, "###")
     all_weights.append(train_mnist_perceptor(i, TRAINING_ROUNDS, BASE_LEARNING_RATE))
 
-with open('weights_0.csv', 'w', newline='') as file:
+with open("weights_0.csv", 'w', newline="") as file:
     csvFile = csv.writer(file)
     for weights in all_weights:
         csvFile.writerow(weights)
