@@ -84,7 +84,7 @@ all_weights = []
 print("### Training for", TARGET, "###")
 all_weights.append(train_mnist_perceptor(TARGET, TRAINING_ROUNDS, BASE_LEARNING_RATE))
 
-with open("weights_0-1.csv", 'w', newline="") as file:
+with open("weights_0-1 test.csv", 'w', newline="") as file:
     csvFile = csv.writer(file)
     for weights in all_weights:
         csvFile.writerow(weights)
